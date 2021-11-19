@@ -20,9 +20,9 @@ const routes = [
         component: () => import('@/views/BarList.vue')
       },
       {
-        path: 'mapList',
-        name: 'MapList',
-        component: () => import('@/views/MapList.vue')
+        path: 'treeList',
+        name: 'TreeList',
+        component: () => import('@/views/TreeList.vue')
       },
       {
         path: 'pieList',

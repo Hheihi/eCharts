@@ -1,36 +1,46 @@
 <template>
   <div>
     <div ref="scatterList" id="scatterList" class="scatterList">
-    <h1 class="title">散点图</h1>
-
-      <el-col :span="6">
-        <div
-          class="grid-content bg-purple"
-          id="scatterChart"
-          @click="dialogTableVisible(options)"
-        ></div>
-        <!-- <p class="optionsName">{{ options.name }}</p>
-      <p class="optionsDesc">{{ options.desc }}</p> -->
-      </el-col>
-      <el-col :span="6"
-        ><div class="grid-content bg-purple-light"></div
-      ></el-col>
-      <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="6"
-        ><div class="grid-content bg-purple-light"></div
-      ></el-col>
-
-      <el-dialog title="详细配置" :visible.sync="visible"> </el-dialog>
+      <h1 class="title">散点图</h1>
+      <draggable
+        chosenClass="chosen"
+        forceFallback="true"
+        group="bar"
+        animation="1000"
+      >
+        <el-col :span="6">
+          <div
+            class="grid-content bg-purple"
+            id="chart13"
+            @click="dialogTableVisible(options1)"
+          ></div>
+        </el-col>
+        <el-col :span="6"
+          ><div class="grid-content bg-purple-light"></div
+        ></el-col>
+        <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+        <el-col :span="6"
+          ><div class="grid-content bg-purple-light"></div
+        ></el-col>
+      </draggable>
+      <Dialog ref="dialog" :type="type" :title="optionsTitle" />
     </div>
   </div>
 </template>
 
 <script>
+import draggable from "vuedraggable";
+
+import Dialog from "@/components/Dialog.vue";
 export default {
   name: "ScatterList",
+  components: {
+    Dialog,
+    draggable,
+  },
   data() {
     return {
-      options: {
+      options1: {
         name: "基础散点图",
         desc: "Basic Scatter Chart",
         xAxis: {},
@@ -66,24 +76,73 @@ export default {
           },
         ],
       },
-      visible: false,
+      optionsName: "",
+      type: "scatter",
     };
   },
-  components: {},
+  computed: {
+    optionsTitle() {
+      return this.optionsName;
+    },
+  },
   mounted() {
     this.draw();
   },
   methods: {
     draw() {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$eCharts.init(document.getElementById("scatterChart"));
+      let chart13 = this.$eCharts.init(document.getElementById("chart13"));
 
       // 绘制图表
-      myChart.setOption(this.options);
+      chart13.setOption(this.options1);
     },
     dialogTableVisible(options) {
-      this.visible = true;
-      console.log(options);
+      this.optionsName = options.name;
+      //模态框组件的隐藏显示属性
+      this.$refs["dialog"].visible = true;
+      //在模态框中绘制图形
+      this.$refs["dialog"].drawDialogChart(options);
+      //点击 赋值之前 恢复默认表单
+      this.$store.state.scatterForm = {
+        name: "",
+        xAxis: {
+          //x轴线条 颜色 粗细
+          axisLine: {
+            lineStyle: {
+              color: "",
+              width: "1",
+            },
+          },
+          //x轴字体颜色字号
+          axisLabel: {
+            color: "",
+            fontSize: "",
+          },
+          //  x轴数据
+        },
+        yAxis: {
+          //y轴字体颜色 粗细
+          axisLabel: {
+            color: "",
+            fontSize: "",
+          },
+        },
+        series: [
+          {
+            //点的颜色
+            itemStyle: {
+              color: "",
+            },
+          },
+        ],
+      };
+      //每次给表单赋值之前都清空表单
+      this.$store.commit(
+        "changeLine",
+        this._.cloneDeep(
+          this._.merge(this.$store.state.scatterForm, this._.cloneDeep(options))
+        )
+      );
     },
   },
 };
@@ -106,23 +165,14 @@ export default {
   width: 400px;
   height: 400px;
   margin-bottom: 20px;
-
+  margin-left: 5px;
   border-radius: 4px;
 }
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
 }
-.optionsName {
-  font-size: 16px;
-  color: #293c55;
-  flex: 1;
-}
-.optionsDesc {
-  font-size: 14px;
-  color: #aaa;
-  flex: 1;
-}
+
 .title {
   width: 100%;
   flex-wrap: nowrap;
@@ -132,5 +182,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  justify-content: center;
 }
 </style>
