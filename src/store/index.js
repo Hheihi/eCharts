@@ -161,6 +161,18 @@ let store = new Vuex.Store({
   mutations: {
     changeLine(state, payload) {
       state.lineForm = payload
+    },
+    changeBar(state,payload){
+      state.barForm = payload
+    },
+    changePie(state,payload){
+      state.pieForm = payload
+    },
+    changeTree(state,payload){
+      state.treeForm = payload
+    },
+    changeScatter(state,payload){
+      state.scatterForm = payload
     }
   }
 })

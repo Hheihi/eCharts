@@ -1,18 +1,18 @@
 <template>
   <el-form :inline="true" :model="barForm" class="demo-form-inline">
-    <el-form-item label="X轴线条颜色:">
+    <el-form-item label="X轴线条颜色:"  v-if="barForm.xAxis">
       <el-color-picker
         v-model="barForm.xAxis.axisLine.lineStyle.color"
         @change="changeOptions(barForm)"
       ></el-color-picker>
     </el-form-item>
-    <el-form-item label="X轴字体颜色:">
+    <el-form-item label="X轴字体颜色:"  v-if="barForm.xAxis">
       <el-color-picker
         v-model="barForm.xAxis.axisLabel.color"
         @change="changeOptions(barForm)"
       ></el-color-picker>
     </el-form-item>
-    <el-form-item label="Y轴字体颜色:">
+    <el-form-item label="Y轴字体颜色:"  v-if="barForm.yAxis">
       <el-color-picker
         v-model="barForm.yAxis.axisLabel.color"
         @change="changeOptions(barForm)"
@@ -24,7 +24,7 @@
         @change="changeOptions(barForm)"
       ></el-color-picker>
     </el-form-item>
-    <el-form-item label="X轴线条粗细:">
+    <el-form-item label="X轴线条粗细:" v-if="barForm.xAxis">
       <el-input
         placeholder="X轴线条粗细"
         v-model="barForm.xAxis.axisLine.lineStyle.width"
@@ -32,7 +32,7 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item label="X轴字体大小:">
+    <el-form-item label="X轴字体大小:" v-if="barForm.xAxis">
       <el-input
         placeholder="X轴字体字号"
         v-model="barForm.xAxis.axisLabel.fontSize"
@@ -40,7 +40,7 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item label="Y轴字体大小:">
+    <el-form-item label="Y轴字体大小:" v-if="barForm.yAxis">
       <el-input
         placeholder="Y轴字体大小"
         v-model="barForm.yAxis.axisLabel.fontSize"
@@ -64,7 +64,6 @@ export default {
   },
   methods: {
     changeOptions(e) {
-      console.log(e);
       this.$emit("change", e);
     },
   },

@@ -14,7 +14,7 @@ import LineForm from "@/components/form/LineForm.vue";
 import BarForm from "@/components/form/BarForm.vue";
 import PieForm from "@/components/form/PieForm.vue";
 import TreeForm from "@/components/form/TreeForm.vue";
-import ScatterForm from './form/ScatterForm.vue';
+import ScatterForm from '@/components/form/ScatterForm.vue';
 
 export default {
   components: { LineForm, BarForm, PieForm, TreeForm,ScatterForm },
@@ -69,15 +69,7 @@ export default {
         //给图例添加监听
       });
     },
-    // legendSelect() {
-    //   let dialogEcharts = this.$eCharts.init(
-    //     document.getElementById("dialog-echarts")
-    //   );
-    //   dialogEcharts.on("legendselectchanged", function (obj) {
-    //     console.log(obj);
-    //     console.log(obj.name);
-    //   });
-    // },
+    
   },
 };
 </script>
