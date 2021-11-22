@@ -8,32 +8,19 @@
         group="bar"
         animation="1000"
       >
-        <el-col :span="6">
+        <el-col :span="6" v-for="item in list" :key="item.id">
           <div
             class="grid-content bg-purple"
-            id="chart9"
-            @click="dialogTableVisible(options1)"
+            :id="item.id"
+            @click="dialogTableVisible(item.options)"
           ></div>
         </el-col>
-        <el-col :span="6"
-          ><div
-            class="grid-content bg-purple-light"
-            id="chart10"
-            @click="dialogTableVisible(options2)"
-          ></div
-        ></el-col>
-        <el-col :span="6"
-          ><div
-            class="grid-content bg-purple"
-            id="chart11"
-            @click="dialogTableVisible(options3)"
-          ></div
-        ></el-col>
+
         <el-col :span="6"
           ><div class="grid-content bg-purple-light"></div
         ></el-col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsTitle" :type="type" />
+      <Dialog ref="dialog" :title="optionsName" :type="type" />
     </div>
   </div>
 </template>
@@ -47,130 +34,137 @@ export default {
   components: { Dialog, draggable },
   data() {
     return {
-      options1: {
-        name: "圆角环形图",
-        desc: "Doughnut Chart with Rounded Corner",
-        tooltip: {
-          trigger: "item",
-        },
-        legend: {
-          top: "5%",
-          left: "center",
-        },
-        series: [
-          {
-            name: "Access From",
-            type: "pie",
-            radius: ["20%", "70%"],
-            avoidLabelOverlap: false,
-            itemStyle: {
-              borderRadius: 10,
-              borderColor: "#fff",
-              borderWidth: 2,
+      list: [
+        {
+          id: "chart9",
+          options: {
+            name: "圆角环形图",
+            desc: "Doughnut Chart with Rounded Corner",
+            tooltip: {
+              trigger: "item",
             },
-            label: {
-              show: false,
-              position: "center",
+            legend: {
+              top: "5%",
+              left: "center",
             },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: "40",
-                fontWeight: "bold",
-              },
-            },
-            labelLine: {
-              show: false,
-            },
-            data: [
-              { value: 1048, name: "Search Engine" },
-              { value: 735, name: "Direct" },
-              { value: 580, name: "Email" },
-              { value: 484, name: "Union Ads" },
-              { value: 300, name: "Video Ads" },
-            ],
-          },
-        ],
-      },
-      options2: {
-        name: "基础南丁格尔玫瑰图",
-        legend: {
-          top: "top",
-        },
-        series: [
-          {
-            name: "Nightingale Chart",
-            type: "pie",
-            radius: ["20%", "50%"],
-            center: ["50%", "50%"],
-            roseType: "area",
-            data: [
-              { value: 40, name: "rose 1" },
-              { value: 38, name: "rose 2" },
-              { value: 32, name: "rose 3" },
-              { value: 30, name: "rose 4" },
-              { value: 28, name: "rose 5" },
-              { value: 26, name: "rose 6" },
-              { value: 22, name: "rose 7" },
-              { value: 18, name: "rose 8" },
-            ],
-          },
-        ],
-      },
-      options3: {
-        name: "饼图标签对齐",
-        series: [
-          {
-            type: "pie",
-            radius: ["", "50%"],
-            center: ["50%", "50%"],
-            data: [
+            series: [
               {
-                name: "Apples",
-                value: 70,
-              },
-              {
-                name: "Strawberries",
-                value: 68,
-              },
-              {
-                name: "Bananas",
-                value: 48,
-              },
-              {
-                name: "Oranges",
-                value: 40,
-              },
-              {
-                name: "Pears",
-                value: 32,
-              },
-              {
-                name: "Pineapples",
-                value: 27,
-              },
-              {
-                name: "Grapes",
-                value: 18,
+                name: "Access From",
+                type: "pie",
+                radius: ["20%", "70%"],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                  borderRadius: 10,
+                  borderColor: "#fff",
+                  borderWidth: 2,
+                },
+                label: {
+                  show: false,
+                  position: "center",
+                },
+                emphasis: {
+                  label: {
+                    show: true,
+                    fontSize: "40",
+                    fontWeight: "bold",
+                  },
+                },
+                labelLine: {
+                  show: false,
+                },
+                data: [
+                  { value: 1048, name: "Search Engine" },
+                  { value: 735, name: "Direct" },
+                  { value: 580, name: "Email" },
+                  { value: 484, name: "Union Ads" },
+                  { value: 300, name: "Video Ads" },
+                ],
               },
             ],
-            label: {
-              position: "outer",
-              alignTo: "labelLine",
-              bleedMargin: 5,
+          }
+        },
+        {
+          id: "chart10",
+          options: {
+            name: "基础南丁格尔玫瑰图",
+            legend: {
+              top: "top",
             },
-          },
-        ],
-      },
+            series: [
+              {
+                name: "Nightingale Chart",
+                type: "pie",
+                radius: ["20%", "50%"],
+                center: ["50%", "50%"],
+                roseType: "area",
+                data: [
+                  { value: 40, name: "rose 1" },
+                  { value: 38, name: "rose 2" },
+                  { value: 32, name: "rose 3" },
+                  { value: 30, name: "rose 4" },
+                  { value: 28, name: "rose 5" },
+                  { value: 26, name: "rose 6" },
+                  { value: 22, name: "rose 7" },
+                  { value: 18, name: "rose 8" },
+                ],
+              },
+            ],
+          }
+        },
+        {
+          id: "chart11",
+          options: {
+            name: "饼图标签对齐",
+            series: [
+              {
+                type: "pie",
+                radius: ["", "50%"],
+                center: ["50%", "50%"],
+                data: [
+                  {
+                    name: "Apples",
+                    value: 70,
+                  },
+                  {
+                    name: "Strawberries",
+                    value: 68,
+                  },
+                  {
+                    name: "Bananas",
+                    value: 48,
+                  },
+                  {
+                    name: "Oranges",
+                    value: 40,
+                  },
+                  {
+                    name: "Pears",
+                    value: 32,
+                  },
+                  {
+                    name: "Pineapples",
+                    value: 27,
+                  },
+                  {
+                    name: "Grapes",
+                    value: 18,
+                  },
+                ],
+                label: {
+                  position: "outer",
+                  alignTo: "labelLine",
+                  bleedMargin: 5,
+                },
+              },
+            ],
+          }
+        },
+      ],
       optionsName: "",
       type: "pie",
     };
   },
-  computed: {
-    optionsTitle() {
-      return this.optionsName;
-    },
-  },
+
   mounted() {
     this.draw();
   },
@@ -180,11 +174,10 @@ export default {
       let chart9 = this.$eCharts.init(document.getElementById("chart9"));
       let chart10 = this.$eCharts.init(document.getElementById("chart10"));
       let chart11 = this.$eCharts.init(document.getElementById("chart11"));
-
       // 绘制图表
-      chart9.setOption(this.options1);
-      chart10.setOption(this.options2);
-      chart11.setOption(this.options3);
+      chart9.setOption(this.list[0].options);
+      chart10.setOption(this.list[1].options);
+      chart11.setOption(this.list[2].options);
     },
     dialogTableVisible(options) {
       this.optionsName = options.name;
@@ -215,7 +208,7 @@ export default {
       };
       //每次给表单赋值之前都清空表单
       this.$store.commit(
-        "changeLine",
+        "changePie",
         this._.cloneDeep(
           this._.merge(this.$store.state.pieForm, this._.cloneDeep(options))
         )

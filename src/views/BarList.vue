@@ -8,36 +8,15 @@
         group="bar"
         animation="1000"
       >
-        <el-col :span="6">
+        <el-col :span="6" v-for="item in list" :key="item.id">
           <div
             class="grid-content bg-purple"
-            id="chart5"
-            @click="dialogTableVisible(options1)"
+            :id="item.id"
+            @click="dialogTableVisible(item.options)"
           ></div>
         </el-col>
-        <el-col :span="6"
-          ><div
-            class="grid-content bg-purple"
-            id="chart6"
-            @click="dialogTableVisible(options2)"
-          ></div
-        ></el-col>
-        <el-col :span="6"
-          ><div
-            class="grid-content bg-purple"
-            id="chart7"
-            @click="dialogTableVisible(options3)"
-          ></div
-        ></el-col>
-        <el-col :span="6"
-          ><div
-            class="grid-content bg-purple"
-            id="chart8"
-            @click="dialogTableVisible(options4)"
-          ></div
-        ></el-col>
       </draggable>
-      <Dialog ref="dialog2" :title="optionsTitle" :type="type" />
+      <Dialog ref="dialog" :title="optionsName" :type="type" />
     </div>
   </div>
 </template>
@@ -119,209 +98,220 @@ export default {
   },
   data() {
     return {
-      options1: {
-        name: "带背景的柱状图",
-        xAxis: {
-          type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        },
-        yAxis: {
-          type: "value",
-        },
-        series: [
-          {
-            data: [120, 200, 150, 80, 70, 110, 130],
-            type: "bar",
-            showBackground: true,
-          },
-        ],
-      },
-      labelRight: {
-        position: "right",
-      },
-      options2: {
-        name: "交错正负轴标签",
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "shadow",
-          },
-        },
-        grid: {
-          top: 80,
-          bottom: 30,
-        },
-        xAxis: {
-          type: "value",
-          position: "top",
-          splitLine: {
-            lineStyle: {
-              type: "dashed",
+      list: [
+        {
+          id: "chart5",
+          options: {
+            name: "带背景的柱状图",
+            xAxis: {
+              type: "category",
+              data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
             },
-          },
-        },
-        yAxis: {
-          type: "category",
-          axisLine: { show: false },
-          axisLabel: { show: false },
-          axisTick: { show: false },
-          splitLine: { show: false },
-          data: [
-            "ten",
-            "nine",
-            "eight",
-            "seven",
-            "six",
-            "five",
-            "four",
-            "three",
-            "two",
-            "one",
-          ],
-        },
-        series: [
-          {
-            name: "Cost",
-            type: "bar",
-            stack: "Total",
-            label: {
-              show: true,
-              formatter: "{b}",
+            yAxis: {
+              type: "value",
             },
-            data: [
-              { value: -0.07, label: this.labelRight },
-              { value: -0.09, label: this.labelRight },
-              0.2,
-              0.44,
-              { value: -0.23, label: this.labelRight },
-              0.08,
-              { value: -0.17, label: this.labelRight },
-              0.47,
-              { value: -0.36, label: this.labelRight },
-              0.18,
+            series: [
+              {
+                data: [120, 200, 150, 80, 70, 110, 130],
+                type: "bar",
+                showBackground: true,
+              },
             ],
           },
-        ],
-      },
-      options3: {
-        name: "Bar Chart on Polar",
-        legend: {
-          show: true,
-          top: "bottom",
-          data: ["Range", "Average"],
         },
-        grid: {
-          top: 100,
-        },
-        angleAxis: {
-          type: "category",
-          data: cities,
-        },
-        tooltip: {
-          show: true,
-          formatter: function (params) {
-            const id = params.dataIndex;
-            return (
-              cities[id] +
-              "<br>Lowest：" +
-              data3[id][0] +
-              "<br>Highest：" +
-              data3[id][1] +
-              "<br>Average：" +
-              data3[id][2]
-            );
-          },
-        },
-        radiusAxis: {},
-        polar: {},
-        series: [
-          {
-            type: "bar",
-            itemStyle: {
-              color: "transparent",
+        {
+          id: "chart6",
+          options: {
+            name: "交错正负轴标签",
+            tooltip: {
+              trigger: "axis",
+              axisPointer: {
+                type: "shadow",
+              },
             },
-            data: data3.map(function (d) {
-              return d[0];
-            }),
-            coordinateSystem: "polar",
-            stack: "Min Max",
-            silent: true,
-          },
-          {
-            type: "bar",
-            data: data3.map(function (d) {
-              return d[1] - d[0];
-            }),
-            coordinateSystem: "polar",
-            name: "Range",
-            stack: "Min Max",
-            itemStyle: {
-              color: "#443121",
+            grid: {
+              top: 80,
+              bottom: 30,
             },
-          },
-          {
-            type: "bar",
-            itemStyle: {
-              color: "transparent",
+            xAxis: {
+              type: "value",
+              position: "top",
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                },
+              },
             },
-            data: data3.map(function (d) {
-              return d[2] - barHeight;
-            }),
-            coordinateSystem: "polar",
-            stack: "Average",
-            silent: true,
-            z: 10,
-          },
-          {
-            type: "bar",
-            data: data3.map(function () {
-              return barHeight * 2;
-            }),
-            coordinateSystem: "polar",
-            name: "Average",
-            stack: "Average",
-            barGap: "-100%",
-            z: 10,
-            itemStyle: {
-              color: "",
+            yAxis: {
+              type: "category",
+              axisLine: { show: false },
+              axisLabel: { show: false },
+              axisTick: { show: false },
+              splitLine: { show: false },
+              data: [
+                "ten",
+                "nine",
+                "eight",
+                "seven",
+                "six",
+                "five",
+                "four",
+                "three",
+                "two",
+                "one",
+              ],
             },
+            series: [
+              {
+                name: "Cost",
+                type: "bar",
+                stack: "Total",
+                label: {
+                  show: true,
+                  formatter: "{b}",
+                },
+                data: [
+                  { value: -0.07, label: this.labelRight },
+                  { value: -0.09, label: this.labelRight },
+                  0.2,
+                  0.44,
+                  { value: -0.23, label: this.labelRight },
+                  0.08,
+                  { value: -0.17, label: this.labelRight },
+                  0.47,
+                  { value: -0.36, label: this.labelRight },
+                  0.18,
+                ],
+              },
+            ],
           },
-        ],
-      },
-      options4: {
-        name: "动态排序柱状图",
-        xAxis: {
-          max: "dataMax",
         },
-        yAxis: {
-          type: "category",
-          data: ["A", "B", "C", "D", "E"],
-          inverse: true,
-          animationDuration: 300,
-          animationDurationUpdate: 300,
-          max: 5, // only the largest 3 bars will be displayed
-        },
-        series: [
-          {
-            realtimeSort: true,
-            name: "X",
-            type: "bar",
-            data: data,
-            label: {
+        {
+          id: "chart7",
+          options: {
+            name: "Bar Chart on Polar",
+            legend: {
               show: true,
-              position: "right",
-              valueAnimation: true,
+              top: "bottom",
+              data: ["Range", "Average"],
             },
+            grid: {
+              top: 100,
+            },
+            angleAxis: {
+              type: "category",
+              data: cities,
+            },
+            tooltip: {
+              show: true,
+              formatter: function (params) {
+                const id = params.dataIndex;
+                return (
+                  cities[id] +
+                  "<br>Lowest：" +
+                  data3[id][0] +
+                  "<br>Highest：" +
+                  data3[id][1] +
+                  "<br>Average：" +
+                  data3[id][2]
+                );
+              },
+            },
+            radiusAxis: {},
+            polar: {},
+            series: [
+              {
+                type: "bar",
+                itemStyle: {
+                  color: "transparent",
+                },
+                data: data3.map(function (d) {
+                  return d[0];
+                }),
+                coordinateSystem: "polar",
+                stack: "Min Max",
+                silent: true,
+              },
+              {
+                type: "bar",
+                data: data3.map(function (d) {
+                  return d[1] - d[0];
+                }),
+                coordinateSystem: "polar",
+                name: "Range",
+                stack: "Min Max",
+                itemStyle: {
+                  color: "#443121",
+                },
+              },
+              {
+                type: "bar",
+                itemStyle: {
+                  color: "transparent",
+                },
+                data: data3.map(function (d) {
+                  return d[2] - barHeight;
+                }),
+                coordinateSystem: "polar",
+                stack: "Average",
+                silent: true,
+                z: 10,
+              },
+              {
+                type: "bar",
+                data: data3.map(function () {
+                  return barHeight * 2;
+                }),
+                coordinateSystem: "polar",
+                name: "Average",
+                stack: "Average",
+                barGap: "-100%",
+                z: 10,
+                itemStyle: {
+                  color: "",
+                },
+              },
+            ],
           },
-        ],
-        legend: {
-          show: true,
         },
-        animationDuration: 0,
-        animationDurationUpdate: 3000,
-        animationEasing: "linear",
-        animationEasingUpdate: "linear",
-      },
+        {
+          id: "chart8",
+          options: {
+            name: "动态排序柱状图",
+            xAxis: {
+              max: "dataMax",
+            },
+            yAxis: {
+              type: "category",
+              data: ["A", "B", "C", "D", "E"],
+              inverse: true,
+              animationDuration: 300,
+              animationDurationUpdate: 300,
+              max: 5, // only the largest 3 bars will be displayed
+            },
+            series: [
+              {
+                realtimeSort: true,
+                name: "X",
+                type: "bar",
+                data: data,
+                label: {
+                  show: true,
+                  position: "right",
+                  valueAnimation: true,
+                },
+              },
+            ],
+            legend: {
+              show: true,
+            },
+            animationDuration: 0,
+            animationDurationUpdate: 3000,
+            animationEasing: "linear",
+            animationEasingUpdate: "linear",
+          },
+        },
+      ],
       optionsName: "",
       type: "bar",
     };
@@ -329,11 +319,7 @@ export default {
   mounted() {
     this.draw();
   },
-  computed: {
-    optionsTitle() {
-      return this.optionsName;
-    },
-  },
+  
   methods: {
     draw() {
       // 基于准备好的dom，初始化echarts实例
@@ -343,20 +329,19 @@ export default {
       let chart8 = this.$eCharts.init(document.getElementById("chart8"));
 
       // 绘制图表
-      chart5.setOption(this.options1);
-      chart6.setOption(this.options2);
-      chart7.setOption(this.options3);
-
-      chart8.setOption(this.options4);
+      chart5.setOption(this.list[0].options);
+      chart6.setOption(this.list[1].options);
+      chart7.setOption(this.list[2].options);
+      chart8.setOption(this.list[3].options);
     },
     dialogTableVisible(options) {
       //把点击的模态框的 图形数据复制给表单
       // this.optionsForm = options;
       this.optionsName = options.name;
       //模态框组件的隐藏显示属性
-      this.$refs["dialog2"].visible = true;
+      this.$refs["dialog"].visible = true;
       //在模态框中绘制图形
-      this.$refs["dialog2"].drawDialogChart(options);
+      this.$refs["dialog"].drawDialogChart(options);
       //点击 赋值之前 恢复默认表单
       this.$store.state.barForm = {
         name: "",
@@ -375,7 +360,6 @@ export default {
           },
           //  x轴数据
         },
-
         yAxis: {
           type: "",
           //y轴字体颜色 粗细
@@ -394,7 +378,7 @@ export default {
       };
       //给vuex表单赋值 采用深拷贝
       this.$store.commit(
-        "changeLine",
+        "changeBar",
         this._.cloneDeep(
           this._.merge(this.$store.state.barForm, this._.cloneDeep(options))
         )
