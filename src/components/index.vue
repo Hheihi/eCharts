@@ -1,7 +1,7 @@
 <template>
   <el-container style="height: 900px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu @select="active" :default-active="activeRoute">
+      <el-menu @select="active" :default-active="index" :router="true">
         <draggable
           chosenClass="chosen"
           forceFallback="true"
@@ -78,14 +78,10 @@ export default {
     ScatterList,
     draggable,
   },
-  computed: {
-    activeRoute() {
-      return this.index;
-    },
-  },
+  computed: {},
   methods: {
     active(index) {
-      this.index = index;
+      this.index = `'${index}'`;
     },
     handleScroll() {
       let that = this;
@@ -101,15 +97,15 @@ export default {
         that.scatterListHigh;
       // scorllTop滑动的距离
       if (scorllTop <= lineScroll) {
-        that.active("/lineList");
+        this.index = "/lineList";
       } else if (scorllTop > lineScroll && scorllTop <= barScroll) {
-        that.active("/barList");
+        this.index = "/barList";
       } else if (scorllTop > barScroll && scorllTop <= pieScroll) {
-        that.active("/pieList");
+        this.index = "/pieList";
       } else if (scorllTop > pieScroll && scorllTop <= scatterScroll) {
-        that.active("/scatterList");
+        this.index = "/scatterList";
       } else {
-        that.active("/treeList");
+        this.index = "/treeList";
       }
     },
   },
@@ -135,6 +131,5 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
 

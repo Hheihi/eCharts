@@ -65,7 +65,6 @@ export default {
   },
   methods: {
     changeOptions(e) {
-      console.log(e);
       this.$emit("change", e);
     },
   },

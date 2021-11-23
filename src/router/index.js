@@ -10,12 +10,12 @@ const routes = [
     component: () => import('@/components/index.vue'),
     children: [
       {
-        path: 'lineList',
+        path: '/lineList',
         name: 'lineList',
         component: () => import('@/views/lineList/LineList.vue')
       },
       {
-        path: 'barList',
+        path: '/barList',
         name: 'barList',
         component: () => import('@/views/barList/BarList.vue')
       },
@@ -35,6 +35,16 @@ const routes = [
         component: () => import('@/views/scatterList/ScatterList.vue')
       }
     ]
+  },
+  // {
+  //   path: '/lineList',
+  //   name: 'lineList',
+  //   component: () => import('@/views/lineList/LineList.vue')
+  // },
+  {
+    path: '*',
+    name: 'error',
+    component: () => import('@/components/Error.vue')
   }
 ]
 

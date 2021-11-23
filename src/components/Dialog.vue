@@ -56,7 +56,6 @@ export default {
       //重新绘图之前销毁之前的图
       this.destoryChart(this.id);
       // 重新画图 值更新 图变化
-      // console.log(e);
       this.drawDialogChart(e);
     },
     //在模态框中画图
