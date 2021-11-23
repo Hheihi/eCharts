@@ -16,7 +16,7 @@
           ></div>
         </el-col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsName" :type="type" />
+      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id"/>
     </div>
   </div>
 </template>
@@ -314,6 +314,7 @@ export default {
       ],
       optionsName: "",
       type: "bar",
+      id:"barList-charts"
     };
   },
   mounted() {
@@ -378,7 +379,7 @@ export default {
       };
       //给vuex表单赋值 采用深拷贝
       this.$store.commit(
-        "changeBar",
+        "changeForm",
         this._.cloneDeep(
           this._.merge(this.$store.state.barForm, this._.cloneDeep(options))
         )

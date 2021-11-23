@@ -53,11 +53,11 @@
 </template>
 <script>
 import draggable from "vuedraggable";
-import BarList from "../views/BarList.vue";
-import LineList from "../views/LineList.vue";
-import TreeList from "../views/TreeList.vue";
-import PieList from "../views/PieList.vue";
-import ScatterList from "../views/ScatterList.vue";
+import BarList from "@/views/barList/BarList.vue";
+import LineList from "@/views/lineList/LineList.vue";
+import TreeList from "@/views/treeList/TreeList.vue";
+import PieList from "@/views/pieList/PieList.vue";
+import ScatterList from "@/views/scatterList/ScatterList.vue";
 export default {
   data() {
     return {

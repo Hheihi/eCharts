@@ -1,6 +1,6 @@
 <template>
   <el-dialog :title="title" :visible.sync="visible" @closed="dialogClosed">
-    <div id="dialog-echarts" class="dialog-echarts"></div>
+    <div :id="id" class="dialog-echarts"></div>
     <LineForm v-if="type === 'line'" @change="changeOptions" />
     <BarForm v-if="type === 'bar'" @change="changeOptions" />
     <PieForm v-if="type === 'pie'" @change="changeOptions" />
@@ -10,17 +10,21 @@
 </template>
 
 <script>
-import LineForm from "@/components/form/LineForm.vue";
-import BarForm from "@/components/form/BarForm.vue";
-import PieForm from "@/components/form/PieForm.vue";
-import TreeForm from "@/components/form/TreeForm.vue";
-import ScatterForm from '@/components/form/ScatterForm.vue';
+import LineForm from "@/views/lineList/LineForm.vue";
+import BarForm from "@/views/barList/BarForm.vue";
+import PieForm from "@/views/pieList/PieForm.vue";
+import TreeForm from "@/views/treeList/TreeForm.vue";
+import ScatterForm from '@/views/scatterList/ScatterForm.vue';
 
 export default {
-  components: { LineForm, BarForm, PieForm, TreeForm,ScatterForm },
   name: "Dialog",
+  components: { LineForm, BarForm, PieForm, TreeForm,ScatterForm },
   props: {
-    //模态框的标题
+    //模态框的id属性
+    id:{
+      type:String,
+      default:()=>null
+    },
     type: {
       type: String,
       default: () => null,
@@ -45,26 +49,25 @@ export default {
     },
     //关闭模态框 销毁实列	Dialog 关闭动画结束时的回调
     dialogClosed() {
-      this.destoryChart("dialog-echarts");
+      this.destoryChart(this.id);
     },
     //input框中的数值改变
     changeOptions(e) {
       //重新绘图之前销毁之前的图
-      this.destoryChart("dialog-echarts");
+      this.destoryChart(this.id);
       // 重新画图 值更新 图变化
       // console.log(e);
       this.drawDialogChart(e);
     },
     //在模态框中画图
     drawDialogChart(options) {
+      // debugger
       // this.destoryChart("dialog-echarts");
-
       // 打开el_dialog时，dom元素还没有渲染完成，可使用Vue.nextTick解决问题
       this.$nextTick(() => {
         let dialogEcharts = this.$eCharts.init(
-          document.getElementById("dialog-echarts")
+          document.getElementById(this.id)
         );
-
         dialogEcharts.setOption(options);
         //给图例添加监听
       });

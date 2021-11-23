@@ -12,31 +12,29 @@ const routes = [
       {
         path: 'lineList',
         name: 'lineList',
-        component: () => import('@/views/LineList.vue')
+        component: () => import('@/views/lineList/LineList.vue')
       },
       {
         path: 'barList',
         name: 'barList',
-        component: () => import('@/views/BarList.vue')
+        component: () => import('@/views/barList/BarList.vue')
       },
       {
         path: 'treeList',
         name: 'TreeList',
-        component: () => import('@/views/TreeList.vue')
+        component: () => import('@/views/treeList/TreeList.vue')
       },
       {
         path: 'pieList',
         name: 'PieList',
-        component: () => import('@/views/PieList.vue')
+        component: () => import('@/views/pieList/PieList.vue')
       },
       {
         path: 'scatterList',
         name: 'scatterList',
-        component: () => import('@/views/ScatterList.vue')
+        component: () => import('@/views/scatterList/ScatterList.vue')
       }
     ]
-
-
   }
 ]
 
