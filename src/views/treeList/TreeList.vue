@@ -19,7 +19,7 @@
         <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
         <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsName" :type="type"> </Dialog>
+      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id"> </Dialog>
     </div>
   </div>
 </template>
@@ -99,6 +99,7 @@ export default {
       ],
       optionsName: "",
       type: "tree",
+      id:"treeList-charts"
     };
   },
   components: { Dialog, draggable },
@@ -147,7 +148,7 @@ export default {
       };
       //给vuex表单赋值 采用深拷贝
       this.$store.commit(
-        "changeTree",
+        "changeForm",
         this._.cloneDeep(
           this._.merge(this.$store.state.treeForm, this._.cloneDeep(options))
         )

@@ -16,7 +16,7 @@
           ></div>
         </el-col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsName" :type="type" />
+      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id"/>
     </div>
   </div>
 </template>
@@ -253,6 +253,7 @@ export default {
       ],
       optionsName: "",
       type: "line",
+      id:"lineList-charts"
     };
   },
   computed: {
@@ -279,6 +280,7 @@ export default {
     },
     //点击每一个画布
     dialogTableVisible(options) {
+      // debugger
       this.optionsName = options.name;
       //模态框组件的隐藏显示属性
       this.$refs["dialog"].visible = true;
@@ -327,9 +329,9 @@ export default {
       };
       //每次给表单赋值之前都清空表单
       this.$store.commit(
-        "changeLine",
+        "changeForm",
         this._.cloneDeep(
-          this._.merge(this.$store.state.lineForm, this._.cloneDeep(options))
+          this._.merge(this.$store.state.lineForm, options)
         )
       );
     },

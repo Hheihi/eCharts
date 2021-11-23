@@ -20,7 +20,7 @@
           ><div class="grid-content bg-purple-light"></div
         ></el-col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsName" :type="type" />
+      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id"/>
     </div>
   </div>
 </template>
@@ -162,6 +162,7 @@ export default {
       ],
       optionsName: "",
       type: "pie",
+      id:"pieList-charts"
     };
   },
 
@@ -208,7 +209,7 @@ export default {
       };
       //每次给表单赋值之前都清空表单
       this.$store.commit(
-        "changePie",
+        "changeForm",
         this._.cloneDeep(
           this._.merge(this.$store.state.pieForm, this._.cloneDeep(options))
         )
