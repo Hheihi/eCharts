@@ -4,6 +4,9 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import * as echarts from 'echarts';
+import { transform } from 'echarts-stat'
+
+echarts.registerTransform(transform.regression);
 import _ from 'lodash'
 import store from './store/index'
 Vue.prototype._ = _

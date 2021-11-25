@@ -15,12 +15,8 @@
             @click="dialogTableVisible(item.options)"
           ></div>
         </el-col>
-
-        <el-col :span="6"
-          ><div class="grid-content bg-purple-light"></div
-        ></el-col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id"/>
+      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id" />
     </div>
   </div>
 </template>
@@ -81,7 +77,7 @@ export default {
                 ],
               },
             ],
-          }
+          },
         },
         {
           id: "chart10",
@@ -109,7 +105,7 @@ export default {
                 ],
               },
             ],
-          }
+          },
         },
         {
           id: "chart11",
@@ -157,12 +153,90 @@ export default {
                 },
               },
             ],
-          }
+          },
+        },
+        {
+          id: "chart12",
+          options: {
+            tooltip: {
+              trigger: "item",
+              formatter: "{a} <br/>{b}: {c} ({d}%)",
+            },
+            legend: {
+              data: ["Union Ads", "Video Ads", "Google", "Bing", "Others"],
+            },
+            series: [
+              {
+                name: "Access From",
+                type: "pie",
+                selectedMode: "single",
+                radius: [0, "15%"],
+                label: {
+                  position: "inner",
+                  fontSize: 14,
+                },
+                labelLine: {
+                  show: false,
+                },
+                data: [
+                  { value: 1548, name: "Search Engine" },
+                  { value: 775, name: "Direct" },
+                  { value: 679, name: "Marketing", selected: true },
+                ],
+              },
+              {
+                name: "Access From",
+                type: "pie",
+                radius: ["30%", "45%"],
+                labelLine: {
+                  length: 30,
+                },
+                label: {
+                  formatter: "{b|{b}:}{d}%  ",
+                  backgroundColor: "#F6F8FC",
+                  borderColor: "#8C8D8E",
+                  borderWidth: 1,
+                  borderRadius: 4,
+                  rich: {
+                    a: {
+                      color: "#6E7079",
+                      lineHeight: 10,
+                      align: "center",
+                    },
+                    hr: {
+                      borderColor: "#8C8D8E",
+                      width: "100%",
+                      borderWidth: 1,
+                      height: 0,
+                    },
+                    b: {
+                      color: "#4C5058",
+                      fontSize: 14,
+                      fontWeight: "bold",
+                      lineHeight: 30,
+                    },
+                    per: {
+                      color: "#fff",
+                      backgroundColor: "#4C5058",
+                      borderRadius: 4,
+                    },
+                  },
+                },
+                data: [
+                  { value: 251, name: "Google" },
+                  { value: 234, name: "Union Ads" },
+                  { value: 147, name: "Bing" },
+                  { value: 135, name: "Video Ads" },
+                  { value: 102, name: "Others" },
+                ],
+              },
+            ],
+          },
         },
       ],
       optionsName: "",
       type: "pie",
-      id:"pieList-charts"
+      id: "pieList-charts",
     };
   },
 
@@ -175,10 +249,13 @@ export default {
       let chart9 = this.$eCharts.init(document.getElementById("chart9"));
       let chart10 = this.$eCharts.init(document.getElementById("chart10"));
       let chart11 = this.$eCharts.init(document.getElementById("chart11"));
+      let chart12 = this.$eCharts.init(document.getElementById("chart12"));
+
       // 绘制图表
       chart9.setOption(this.list[0].options);
       chart10.setOption(this.list[1].options);
       chart11.setOption(this.list[2].options);
+      chart12.setOption(this.list[3].options);
     },
     dialogTableVisible(options) {
       this.optionsName = options.name;
