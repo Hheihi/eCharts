@@ -3418,6 +3418,11 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
+echarts-stat@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npm.taobao.org/echarts-stat/download/echarts-stat-1.2.0.tgz#d1e7a05d1827724c5cde81f76ee1d75a901746a2"
+  integrity sha1-0eegXRgnckxc3oH3buHXWpAXRqI=
+
 echarts@^5.2.2:
   version "5.2.2"
   resolved "https://registry.npmmirror.com/echarts/download/echarts-5.2.2.tgz#ec3c8b2a151cbba71ba3c2c7cf9b2f2047ce4370"
