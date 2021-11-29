@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import lineForm from '@/store/state/lineForm'
-import barForm from '@/store/state/barForm'
-import pieForm from '@/store/state/pieForm'
-import treeForm from '@/store/state/treeForm'
-import scatterForm from '@/store/state/scatterForm'
+import lineForm from '@/store/modules/lineForm'
+import barForm from '@/store/modules/barForm'
+import pieForm from '@/store/modules/pieForm'
+import treeForm from '@/store/modules/treeForm'
+import scatterForm from '@/store/modules/scatterForm'
 
 
 Vue.use(Vuex)
