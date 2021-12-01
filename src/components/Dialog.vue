@@ -8,7 +8,7 @@
 <script>
 import Form from "@/components/Form.vue";
 import { Dialog } from "element-ui";
-
+import { debounce } from "@/utils/throttle.js";
 export default {
   name: "el-Dialog",
   components: {
@@ -52,7 +52,8 @@ export default {
       //重新绘图之前销毁之前的图
       this.destoryChart(this.id);
       // 重新画图 值更新 图变化
-      this.drawDialogChart(e);
+      debounce(this.drawDialogChart(e),5000);
+      
     },
     //在模态框中画图
     drawDialogChart(options) {

@@ -212,10 +212,7 @@ export default {
       default: null,
     },
   },
-  created() {
-    console.log(this.type);
-    //   console.log(this.$store.state.form);
-  },
+
   components: {
     Form,
     FormItem,
@@ -226,7 +223,6 @@ export default {
   },
   methods: {
     changeOptions(e) {
-        console.log(123);
       this.$emit("change", e);
     },
   },
