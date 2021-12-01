@@ -8,15 +8,15 @@
         group="line"
         animation="1000"
       >
-        <el-col :span="6" v-for="item in list" :key="item.id">
+        <Col :span="6" v-for="item in list" :key="item.id">
           <div
             class="grid-content bg-purple"
             :id="item.id"
             @click="dialogTableVisible(item.options)"
           ></div>
-        </el-col>
+        </Col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id"/>
+      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id" />
     </div>
   </div>
 </template>
@@ -24,9 +24,12 @@
 <script>
 import draggable from "vuedraggable";
 import Dialog from "@/components/Dialog.vue";
+import { Col } from "element-ui";
+import { cloneDeep, merge } from "lodash";
+
 export default {
   name: "EchartsList",
-  components: { Dialog, draggable },
+  components: { Dialog, draggable, Col },
   data() {
     return {
       list: [
@@ -253,9 +256,10 @@ export default {
       ],
       optionsName: "",
       type: "line",
-      id:"lineList-charts"
+      id: "lineList-charts",
     };
   },
+
   computed: {
     // optionsTitle() {
     //   return this.optionsName;
@@ -287,92 +291,38 @@ export default {
       //在模态框中绘制图形
       this.$refs["dialog"].drawDialogChart(options);
       //点击 赋值之前 恢复默认表单
-      this.$store.state.lineForm = {
-        name: "",
-        xAxis: {
-          type: "",
-          //x轴线条 颜色 粗细
-          axisLine: {
-            lineStyle: {
-              color: "",
-              width: "1",
-            },
-          },
-          //x轴字体颜色字号
-          axisLabel: {
-            color: "",
-            fontSize: "",
-          },
-          //  x轴数据
-          // data: [],
-        },
-
-        yAxis: {
-          type: "",
-          //y轴字体颜色 粗细
-          axisLabel: {
-            color: "",
-            fontSize: "",
-          },
-        },
-        series: [
-          {
-            // data: [],
-            // type: "",
-            lineStyle: {
-              type: "",
-              color: "",
-              width: "1",
-            },
-          },
-        ],
-      };
+      // console.log(this.$store.state.form);
+      this.$store.commit(
+        "changeForm",
+        this.$store.state.form
+      );
       //每次给表单赋值之前都清空表单
       this.$store.commit(
         "changeForm",
-        this._.cloneDeep(
-          this._.merge(this.$store.state.lineForm, options)
-        )
+        cloneDeep(merge(this.$store.state.form, options))
       );
     },
   },
 };
 </script>
 
-<style scoped>
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  width: 400px;
-  height: 400px;
-  margin-bottom: 20px;
-  margin-left: 5px;
-  border-radius: 4px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
+<style lang="stylus" scoped>
+.grid-content 
+  width 400px;
+  height 400px;
+  margin-bottom 20px;
+  margin-left 5px;
+  border-radius 4px;
+.bg-purple
+    background #DEDEDE
+.title 
+  width 100%;
+  flex-wrap nowrap;
+  display block;
+.lineList 
+  display flex;
+  flex-wrap wrap;
+  flex-direction row;
+  justify-content center;
 
-.title {
-  width: 100%;
-  flex-wrap: nowrap;
-  display: block;
-}
-.lineList {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-}
 </style>

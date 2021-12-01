@@ -8,16 +8,16 @@
         group="bar"
         animation="1000"
       >
-        <el-col :span="6" v-for="item in list" :key="item.id">
+        <Col :span="6" v-for="item in list" :key="item.id">
           <div
             class="grid-content bg-purple"
             :id="item.id"
             @click="dialogTableVisible(item.options)"
           ></div>
-        </el-col>
-        <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
-        <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+        </Col>
+        <Col :span="6"><div class="grid-content bg-purple"></div></Col>
+        <Col :span="6"><div class="grid-content bg-purple"></div></Col>
+        <Col :span="6"><div class="grid-content bg-purple"></div></Col>
       </draggable>
       <Dialog ref="dialog" :title="optionsName" :type="type" :id="id"> </Dialog>
     </div>
@@ -26,6 +26,8 @@
 
 <script>
 import draggable from "vuedraggable";
+import { Col } from "element-ui";
+import { cloneDeep, merge } from 'lodash';
 
 import Dialog from "@/components/Dialog.vue";
 export default {
@@ -95,17 +97,15 @@ export default {
               },
             ],
           },
-        }
+        },
       ],
       optionsName: "",
       type: "tree",
-      id:"treeList-charts"
+      id: "treeList-charts",
     };
   },
-  components: { Dialog, draggable },
-  computed: {
-   
-  },
+  components: { Dialog, draggable, Col },
+  computed: {},
   mounted() {
     this.draw();
   },
@@ -123,75 +123,36 @@ export default {
       //在模态框中绘制图形
       this.$refs["dialog"].drawDialogChart(options);
       //点击 赋值之前 恢复默认表单
-      this.$store.state.treeForm = {
-        series: [
-          {
-            label: {
-              position: "right",
-            },
-            //节点颜色
-            itemStyle: {
-              color: "",
-            },
-            //线条颜色 粗细
-            lineStyle: {
-              color: "",
-              width: undefined,
-            },
-            //节点聚焦
-            emphasis: {
-              focus: "ancestor",
-              blurScope: "global",
-            },
-          },
-        ],
-      };
+      this.$store.commit(
+        "changeForm",
+        this.$store.state.form
+      );
       //给vuex表单赋值 采用深拷贝
       this.$store.commit(
         "changeForm",
-        this._.cloneDeep(
-          this._.merge(this.$store.state.treeForm, this._.cloneDeep(options))
-        )
+        cloneDeep(merge(this.$store.state.form, options))
       );
     },
   },
 };
 </script>
 
-<style scoped>
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  width: 400px;
-  height: 400px;
-  margin-bottom: 20px;
-  margin-left: 5px;
-  border-radius: 4px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-
-.title {
-  width: 100%;
-  flex-wrap: nowrap;
-  display: block;
-}
-.treeList {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-}
+<style lang="stylus" scoped>
+.grid-content 
+  width 400px;
+  height 400px;
+  margin-bottom 20px;
+  margin-left 5px;
+  border-radius 4px;
+.bg-purple
+    background #DEDEDE
+.title 
+  width 100%;
+  flex-wrap nowrap;
+  display block;
+.lineList 
+  display flex;
+  flex-wrap wrap;
+  flex-direction row;
+  justify-content center;
 </style>

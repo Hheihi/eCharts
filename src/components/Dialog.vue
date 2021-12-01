@@ -1,29 +1,25 @@
 <template>
-  <el-dialog :title="title" :visible.sync="visible" @closed="dialogClosed">
+  <Dialog :title="title" :visible.sync="visible" @closed="dialogClosed">
     <div :id="id" class="dialog-echarts"></div>
-    <LineForm v-if="type === 'line'" @change="changeOptions" />
-    <BarForm v-if="type === 'bar'" @change="changeOptions" />
-    <PieForm v-if="type === 'pie'" @change="changeOptions" />
-    <TreeForm v-if="type === 'tree'" @change="changeOptions" />
-    <ScatterForm v-if="type === 'scatter'" @change="changeOptions"/>
-  </el-dialog>
+    <Form :type="type" @change="changeOptions" />
+  </Dialog>
 </template>
 
 <script>
-import LineForm from "@/views/lineList/LineForm.vue";
-import BarForm from "@/views/barList/BarForm.vue";
-import PieForm from "@/views/pieList/PieForm.vue";
-import TreeForm from "@/views/treeList/TreeForm.vue";
-import ScatterForm from '@/views/scatterList/ScatterForm.vue';
+import Form from "@/components/Form.vue";
+import { Dialog } from "element-ui";
 
 export default {
-  name: "Dialog",
-  components: { LineForm, BarForm, PieForm, TreeForm,ScatterForm },
+  name: "el-Dialog",
+  components: {
+    Dialog,
+    Form,
+  },
   props: {
     //模态框的id属性
-    id:{
-      type:String,
-      default:()=>null
+    id: {
+      type: String,
+      default: () => null,
     },
     type: {
       type: String,
@@ -71,12 +67,11 @@ export default {
         //给图例添加监听
       });
     },
-    
   },
 };
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
 .dialog-echarts {
   width: 400px;
   height: 400px;
