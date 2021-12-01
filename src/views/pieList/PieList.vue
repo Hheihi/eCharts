@@ -8,13 +8,13 @@
         group="bar"
         animation="1000"
       >
-        <el-col :span="6" v-for="item in list" :key="item.id">
+        <Col :span="6" v-for="item in list" :key="item.id">
           <div
             class="grid-content bg-purple"
             :id="item.id"
             @click="dialogTableVisible(item.options)"
           ></div>
-        </el-col>
+        </Col>
       </draggable>
       <Dialog ref="dialog" :title="optionsName" :type="type" :id="id" />
     </div>
@@ -24,10 +24,11 @@
 <script>
 import Dialog from "@/components/Dialog.vue";
 import draggable from "vuedraggable";
+import { Col } from "element-ui";
+import { cloneDeep, merge } from "lodash";
 
 export default {
   name: "PieList",
-  components: { Dialog, draggable },
   data() {
     return {
       list: [
@@ -239,6 +240,11 @@ export default {
       id: "pieList-charts",
     };
   },
+  components: {
+    Dialog,
+    draggable,
+    Col,
+  },
 
   mounted() {
     this.draw();
@@ -264,31 +270,15 @@ export default {
       //在模态框中绘制图形
       this.$refs["dialog"].drawDialogChart(options);
       //点击 赋值之前 恢复默认表单
-      this.$store.state.pieForm = {
-        name: "",
-        series: [
-          {
-            radius: ["", ""],
-            itemStyle: {
-              borderRadius: undefined, //圆角大小
-              borderColor: "", //边框颜色
-              borderWidth: undefined, //边框粗细
-            },
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10, //阴影长度
-                shadowOffsetX: 0, //阴影偏移量
-                shadowColor: "", //阴影颜色
-              },
-            },
-          },
-        ],
-      };
+      this.$store.commit(
+        "changeForm",
+        this.$store.state.form
+      );
       //每次给表单赋值之前都清空表单
       this.$store.commit(
         "changeForm",
-        this._.cloneDeep(
-          this._.merge(this.$store.state.pieForm, this._.cloneDeep(options))
+       cloneDeep(
+          merge(this.$store.state.form, options)
         )
       );
     },
@@ -296,40 +286,22 @@ export default {
 };
 </script>
 
-<style scoped>
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  width: 400px;
-  height: 400px;
-  margin-bottom: 20px;
-  margin-left: 5px;
-  border-radius: 4px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-
-.title {
-  width: 100%;
-  flex-wrap: nowrap;
-  display: block;
-}
-.pieList {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-}
+<style lang="stylus" scoped>
+.grid-content 
+  width 400px;
+  height 400px;
+  margin-bottom 20px;
+  margin-left 5px;
+  border-radius 4px;
+.bg-purple
+    background #DEDEDE
+.title 
+  width 100%;
+  flex-wrap nowrap;
+  display block;
+.lineList 
+  display flex;
+  flex-wrap wrap;
+  flex-direction row;
+  justify-content center;
 </style>

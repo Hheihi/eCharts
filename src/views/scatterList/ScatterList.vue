@@ -8,15 +8,14 @@
         group="bar"
         animation="1000"
       >
-        <el-col :span="6" v-for="item in list" :key="item.id">
+        <Col :span="6" v-for="item in list" :key="item.id">
           <div
             class="grid-content bg-purple"
             :id="item.id"
             @click="dialogTableVisible(item.options)"
           ></div>
-        </el-col>
-        <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
-
+        </Col>
+        <Col :span="6"><div class="grid-content bg-purple"></div></Col>
       </draggable>
       <Dialog ref="dialog" :type="type" :title="optionsName" :id="id" />
     </div>
@@ -24,13 +23,17 @@
 </template>
 
 <script>
+import { Col } from "element-ui";
 import draggable from "vuedraggable";
 import Dialog from "@/components/Dialog.vue";
+import { cloneDeep, merge } from "lodash";
+
 export default {
   name: "ScatterList",
   components: {
     Dialog,
     draggable,
+    Col,
   },
   data() {
     return {
@@ -155,7 +158,7 @@ export default {
         {
           id: "chart15",
           options: {
-            name:"基础雷达图",
+            name: "基础雷达图",
             legend: {
               data: ["Allocated Budget", "Actual Spending"],
             },
@@ -216,86 +219,37 @@ export default {
       this.$refs["dialog"].visible = true;
       //在模态框中绘制图形
       this.$refs["dialog"].drawDialogChart(options);
-      //点击 赋值之前 恢复默认表单
-      this.$store.state.scatterForm = {
-        name: "",
-        xAxis: {
-          //x轴线条 颜色 粗细
-          axisLine: {
-            lineStyle: {
-              color: "",
-              width: "1",
-            },
-          },
-          //x轴字体颜色字号
-          axisLabel: {
-            color: "",
-            fontSize: "",
-          },
-          //  x轴数据
-        },
-        yAxis: {
-          //y轴字体颜色 粗细
-          axisLabel: {
-            color: "",
-            fontSize: "",
-          },
-        },
-        series: [
-          {
-            //点的颜色
-            itemStyle: {
-              color: "",
-            },
-          },
-        ],
-      };
+
       //每次给表单赋值之前都清空表单
       this.$store.commit(
         "changeForm",
-        this._.cloneDeep(
-          this._.merge(this.$store.state.scatterForm, this._.cloneDeep(options))
-        )
+        this.$store.state.form
+      );
+      this.$store.commit(
+        "changeForm",
+        cloneDeep(merge(this.$store.state.form, options))
       );
     },
   },
 };
 </script>
 
-<style scoped>
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  width: 400px;
-  height: 400px;
-  margin-bottom: 20px;
-  margin-left: 5px;
-  border-radius: 4px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-
-.title {
-  width: 100%;
-  flex-wrap: nowrap;
-  display: block;
-}
-.scatterList {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-}
+<style lang="stylus" scoped>
+.grid-content 
+  width 400px;
+  height 400px;
+  margin-bottom 20px;
+  margin-left 5px;
+  border-radius 4px;
+.bg-purple
+    background #DEDEDE
+.title 
+  width 100%;
+  flex-wrap nowrap;
+  display block;
+.lineList 
+  display flex;
+  flex-wrap wrap;
+  flex-direction row;
+  justify-content center;
 </style>

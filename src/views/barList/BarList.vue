@@ -8,15 +8,15 @@
         group="bar"
         animation="1000"
       >
-        <el-col :span="6" v-for="item in list" :key="item.id">
+        <Col :span="6" v-for="item in list" :key="item.id">
           <div
             class="grid-content bg-purple"
             :id="item.id"
             @click="dialogTableVisible(item.options)"
           ></div>
-        </el-col>
+        </Col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id"/>
+      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id" />
     </div>
   </div>
 </template>
@@ -87,12 +87,14 @@ const cities = [
   "烟台",
 ];
 const barHeight = 50;
+import { Col } from "element-ui";
+import { cloneDeep, merge } from "lodash";
 import draggable from "vuedraggable";
-
 import Dialog from "@/components/Dialog.vue";
 export default {
   name: "BatList",
   components: {
+    Col,
     Dialog,
     draggable,
   },
@@ -314,13 +316,13 @@ export default {
       ],
       optionsName: "",
       type: "bar",
-      id:"barList-charts"
+      id: "barList-charts",
     };
   },
   mounted() {
     this.draw();
   },
-  
+
   methods: {
     draw() {
       // 基于准备好的dom，初始化echarts实例
@@ -344,9 +346,11 @@ export default {
       //在模态框中绘制图形
       this.$refs["dialog"].drawDialogChart(options);
       //点击 赋值之前 恢复默认表单
-      this.$store.state.barForm = {
+      const form = {
         name: "",
+        //x轴
         xAxis: {
+          // type: "",
           //x轴线条 颜色 粗细
           axisLine: {
             lineStyle: {
@@ -360,9 +364,11 @@ export default {
             fontSize: "",
           },
           //  x轴数据
+          // data: [],
         },
+        //y轴
         yAxis: {
-          type: "",
+          // type: "",
           //y轴字体颜色 粗细
           axisLabel: {
             color: "",
@@ -371,37 +377,51 @@ export default {
         },
         series: [
           {
+            // data: [],
+            // type: "",
+            lineStyle: {
+              type: "",
+              color: "",
+              width: "1",
+            },
             itemStyle: {
               color: "",
+              borderRadius: undefined, //圆角大小
+              borderColor: "", //边框颜色
+              borderWidth: undefined, //边框粗细
+            },
+            orient: "LR",
+            label: {
+              position: "right",
+            },
+            //线条形状
+            edgeShape: "polyline",
+            //节点聚焦
+            emphasis: {
+              focus: "ancestor",
+              blurScope: "global",
+              itemStyle: {
+                shadowBlur: 10, //阴影长度
+                shadowOffsetX: 0, //阴影偏移量
+                shadowColor: "", //阴影颜色
+              },
             },
           },
         ],
       };
+      this.$store.commit("changeForm", form);
+      console.log(this.$store.state.form);
       //给vuex表单赋值 采用深拷贝
       this.$store.commit(
         "changeForm",
-        this._.cloneDeep(
-          this._.merge(this.$store.state.barForm, this._.cloneDeep(options))
-        )
+        cloneDeep(merge(this.$store.state.form, options))
       );
     },
   },
 };
 </script>
 
-<style scoped>
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
+<style lang="stylus" scoped>
 .grid-content {
   width: 400px;
   height: 400px;
@@ -409,9 +429,9 @@ export default {
   margin-left: 5px;
   border-radius: 4px;
 }
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
+
+.bg-purple {
+  background: #DEDEDE;
 }
 
 .title {
@@ -419,7 +439,8 @@ export default {
   flex-wrap: nowrap;
   display: block;
 }
-.barList {
+
+.lineList {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
