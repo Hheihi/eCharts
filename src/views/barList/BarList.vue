@@ -16,7 +16,7 @@
           ></div>
         </Col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id" />
+      <InitDialog ref="dialog" :title="optionsName" :id="id" />
     </div>
   </div>
 </template>
@@ -90,13 +90,14 @@ const barHeight = 50;
 import { Col } from "element-ui";
 import { cloneDeep, merge } from "lodash";
 import draggable from "vuedraggable";
-import Dialog from "@/components/Dialog.vue";
+import InitDialog from "@/components/InitDialog.vue";
+import goodsApi from "@/api/goods";
 export default {
   name: "BatList",
   components: {
     Col,
-    Dialog,
     draggable,
+    InitDialog
   },
   data() {
     return {
@@ -107,14 +108,19 @@ export default {
             name: "带背景的柱状图",
             xAxis: {
               type: "category",
-              data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+              data: [],
             },
             yAxis: {
               type: "value",
             },
+
+            tooltip: {
+              show: true,
+            },
+
             series: [
               {
-                data: [120, 200, 150, 80, 70, 110, 130],
+                data: [],
                 type: "bar",
                 showBackground: true,
               },
@@ -317,12 +323,21 @@ export default {
       optionsName: "",
       type: "bar",
       id: "barList-charts",
+      timer: undefined,
     };
   },
-  mounted() {
+  async mounted() {
+    await this.getGoodList();
+    if (this.timer) {
+      clearInterval(this.timer);
+    } else {
+      this.timer = setInterval(() => {
+        this.getGoodList();
+        this.draw();
+      }, 1000 * 30);
+    }
     this.draw();
   },
-
   methods: {
     draw() {
       // 基于准备好的dom，初始化echarts实例
@@ -339,13 +354,6 @@ export default {
     },
     dialogTableVisible(options) {
       //把点击的模态框的 图形数据复制给表单
-      // this.optionsForm = options;
-      this.optionsName = options.name;
-      //模态框组件的隐藏显示属性
-      this.$refs["dialog"].visible = true;
-      //在模态框中绘制图形
-      this.$refs["dialog"].drawDialogChart(options);
-      //点击 赋值之前 恢复默认表单
       const form = {
         name: "",
         //x轴
@@ -410,12 +418,33 @@ export default {
         ],
       };
       this.$store.commit("changeForm", form);
-      console.log(this.$store.state.form);
+      this.$store.commit("changeType", this.type);
+
+      this.optionsName = options.name;
+      //模态框组件的隐藏显示属性
+      this.$refs["dialog"].visible = true;
+      //在模态框中绘制图形
+      this.$refs["dialog"].drawDialogChart(options);
+      //点击 赋值之前 恢复默认表单
+
       //给vuex表单赋值 采用深拷贝
       this.$store.commit(
         "changeForm",
         cloneDeep(merge(this.$store.state.form, options))
       );
+    },
+    async getGoodList() {
+      const { data } = await goodsApi.getGoodList();
+
+      //x轴
+      const xAxis = data.data.map((item) => item.name);
+      //数据
+      const seriesData = data.data.map((item) => item.num);
+      this.list[0].options.xAxis.data = xAxis;
+      this.list[0].options.series[0].data = seriesData;
+    },
+    destroyed () {
+      clearInterval(this.timer)
     },
   },
 };
@@ -440,7 +469,7 @@ export default {
   display: block;
 }
 
-.lineList {
+.barList {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;

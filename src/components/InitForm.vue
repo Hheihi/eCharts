@@ -1,12 +1,12 @@
 <template>
-  <Form :model="form" :inline="true">
+  <Form :model="listForm" :inline="true" class="initForm">
     <FormItem
       label="X轴线条颜色:"
       v-if="type === 'line' || type === 'bar' || type === 'scatter'"
     >
       <ColorPicker
-        v-model="form.xAxis.axisLine.lineStyle.color"
-        @change="changeOptions(form)"
+        v-model="listForm.xAxis.axisLine.lineStyle.color"
+        @change="changeOptions(listForm)"
       ></ColorPicker>
     </FormItem>
     <FormItem
@@ -14,8 +14,8 @@
       v-if="type === 'line' || type === 'bar' || type === 'scatter'"
     >
       <ColorPicker
-        v-model="form.xAxis.axisLabel.color"
-        @change="changeOptions(form)"
+        v-model="listForm.xAxis.axisLabel.color"
+        @change="changeOptions(listForm)"
       ></ColorPicker>
     </FormItem>
     <FormItem
@@ -23,33 +23,75 @@
       v-if="type === 'line' || type === 'bar' || type === 'scatter'"
     >
       <ColorPicker
-        v-model="form.yAxis.axisLabel.color"
-        @change="changeOptions(form)"
+        v-model="listForm.yAxis.axisLabel.color"
+        @change="changeOptions(listForm)"
       ></ColorPicker>
     </FormItem>
     <FormItem label="柱状图柱体颜色:" v-if="type === 'bar'">
       <ColorPicker
-        v-model="form.series[0].itemStyle.color"
-        @change="changeOptions(form)"
+        v-model="listForm.series[0].itemStyle.color"
+        @change="changeOptions(listForm)"
       ></ColorPicker>
     </FormItem>
     <FormItem label="点的颜色:" v-if="type === 'scatter'">
       <ColorPicker
-        v-model="form.series[0].itemStyle.color"
-        @change="changeOptions(form)"
+        v-model="listForm.series[0].itemStyle.color"
+        @change="changeOptions(listForm)"
       ></ColorPicker>
     </FormItem>
     <FormItem label="线条颜色(默认与X轴同色):" v-if="type === 'line'">
       <ColorPicker
-        v-model="form.series[0].lineStyle.color"
-        @change="changeOptions(form)"
+        v-model="listForm.series[0].lineStyle.color"
+        @change="changeOptions(listForm)"
       ></ColorPicker>
     </FormItem>
+
+    <FormItem label="节点颜色：" v-if="type === 'tree'">
+      <ColorPicker
+        v-model="listForm.series[0].itemStyle.color"
+        @change="changeOptions(listForm)"
+      ></ColorPicker>
+    </FormItem>
+    <FormItem label="线条颜色：" v-if="type === 'tree'">
+      <ColorPicker
+        v-model="listForm.series[0].lineStyle.color"
+        @change="changeOptions(listForm)"
+      ></ColorPicker>
+    </FormItem>
+    <FormItem label="阴影长度:" v-if="type === 'pie'">
+      <Input
+        v-model="listForm.series[0].emphasis.itemStyle.shadowBlur"
+        type="number"
+        @input="changeOptions(listForm)"
+      ></Input>
+    </FormItem>
+    <FormItem label="阴影偏移量:" v-if="type === 'pie'">
+      <Input
+        v-model="listForm.series[0].emphasis.itemStyle.shadowOffsetX"
+        type="number"
+        @input="changeOptions(listForm)"
+      ></Input>
+    </FormItem>
+    <FormItem label="阴影颜色:" v-if="type === 'pie'">
+      <ColorPicker
+        v-model="listForm.series[0].emphasis.itemStyle.shadowColor"
+        @change="changeOptions(listForm)"
+      ></ColorPicker>
+    </FormItem>
+    <FormItem label="边框颜色:" v-if="type === 'pie'">
+      <ColorPicker
+        v-model="listForm.series[0].itemStyle.borderColor"
+        @change="changeOptions(listForm)"
+      ></ColorPicker>
+    </FormItem>
+
+    <!-- <Col> -->
     <FormItem label="线条粗细:" v-if="type === 'line' || type === 'tree'">
       <Input
         placeholder="线条粗细"
-        v-model="form.series[0].lineStyle.width"
-        @input="changeOptions(form)"
+        v-model="listForm.series[0].lineStyle.width"
+        type="number"
+        @input="changeOptions(listForm)"
       ></Input>
     </FormItem>
     <FormItem
@@ -58,8 +100,9 @@
     >
       <Input
         placeholder="X轴线条粗细"
-        v-model="form.xAxis.axisLine.lineStyle.width"
-        @input="changeOptions(form)"
+        v-model="listForm.xAxis.axisLine.lineStyle.width"
+        type="number"
+        @input="changeOptions(listForm)"
       ></Input>
     </FormItem>
     <FormItem
@@ -68,8 +111,9 @@
     >
       <Input
         placeholder="X轴字体大小"
-        v-model="form.xAxis.axisLabel.fontSize"
-        @input="changeOptions(form)"
+        v-model="listForm.xAxis.axisLabel.fontSize"
+        type="number"
+        @input="changeOptions(listForm)"
       ></Input>
     </FormItem>
     <FormItem
@@ -78,62 +122,48 @@
     >
       <Input
         placeholder="Y轴字体大小"
-        v-model="form.yAxis.axisLabel.fontSize"
-        @input="changeOptions(form)"
+        v-model="listForm.yAxis.axisLabel.fontSize"
+        type="number"
+        @input="changeOptions(listForm)"
       ></Input>
     </FormItem>
+    <!-- </Col> -->
+
     <FormItem label="内半径：" v-if="type === 'pie'">
       <Input
-        v-model="form.series[0].radius[0]"
-        @input="changeOptions(form)"
+        type="number"
+        v-model="listForm.series[0].radius[0]"
+        @input="changeOptions(listForm)"
       ></Input>
     </FormItem>
+
     <FormItem label="外半径：" v-if="type === 'pie'">
       <Input
-        v-model="form.series[0].radius[1]"
-        @input="changeOptions(form)"
+        v-model="listForm.series[0].radius[1]"
+        type="number"
+        @input="changeOptions(listForm)"
       ></Input>
     </FormItem>
-    <FormItem label="阴影长度:" v-if="type === 'pie'">
-      <Input
-        v-model="form.series[0].emphasis.itemStyle.shadowBlur"
-        @input="changeOptions(form)"
-      ></Input>
-    </FormItem>
-    <FormItem label="阴影偏移量:" v-if="type === 'pie'">
-      <Input
-        v-model="form.series[0].emphasis.itemStyle.shadowOffsetX"
-        @input="changeOptions(form)"
-      ></Input>
-    </FormItem>
+
     <FormItem label="圆角大小:" v-if="type === 'pie'">
       <Input
-        v-model="form.series[0].itemStyle.borderRadius"
-        @input="changeOptions(form)"
+        v-model="listForm.series[0].itemStyle.borderRadius"
+        type="number"
+        @input="changeOptions(listForm)"
       ></Input>
     </FormItem>
     <FormItem label="边框粗细:" v-if="type === 'pie'">
       <Input
-        v-model="form.series[0].itemStyle.borderWidth"
-        @input="changeOptions(form)"
+        v-model="listForm.series[0].itemStyle.borderWidth"
+        type="number"
+        @input="changeOptions(listForm)"
       ></Input>
     </FormItem>
-    <FormItem label="阴影颜色:" v-if="type === 'pie'">
-      <ColorPicker
-        v-model="form.series[0].emphasis.itemStyle.shadowColor"
-        @change="changeOptions(form)"
-      ></ColorPicker>
-    </FormItem>
-    <FormItem label="边框颜色:" v-if="type === 'pie'">
-      <ColorPicker
-        v-model="form.series[0].itemStyle.borderColor"
-        @change="changeOptions(form)"
-      ></ColorPicker>
-    </FormItem>
+
     <FormItem label="请选择节点显示位置:" v-if="type === 'tree'">
       <Select
-        v-model="form.series[0].label.position"
-        @change="changeOptions(form)"
+        v-model="listForm.series[0].label.position"
+        @change="changeOptions(listForm)"
       >
         <Option
           v-for="item in position"
@@ -145,7 +175,10 @@
       </Select>
     </FormItem>
     <FormItem label="请选择线条样式:" v-if="type === 'tree'">
-      <Select v-model="form.series[0].edgeShape" @change="changeOptions(form)">
+      <Select
+        v-model="listForm.series[0].edgeShape"
+        @change="changeOptions(listForm)"
+      >
         <Option
           v-for="item in shape"
           :key="item.id"
@@ -156,7 +189,10 @@
       </Select>
     </FormItem>
     <FormItem label="请选择树正交布局的方向:" v-if="type === 'tree'">
-      <Select v-model="form.series[0].orient" @change="changeOptions(form)">
+      <Select
+        v-model="listForm.series[0].orient"
+        @change="changeOptions(listForm)"
+      >
         <Option
           v-for="item in orient"
           :key="item.id"
@@ -166,24 +202,18 @@
         </Option>
       </Select>
     </FormItem>
-
-    <FormItem label="节点颜色：" v-if="type === 'tree'">
-      <ColorPicker
-        v-model="form.series[0].itemStyle.color"
-        @change="changeOptions(form)"
-      ></ColorPicker>
-    </FormItem>
-    <FormItem label="线条颜色：" v-if="type === 'tree'">
-      <ColorPicker
-        v-model="form.series[0].lineStyle.color"
-        @change="changeOptions(form)"
-      ></ColorPicker>
-    </FormItem>
   </Form>
 </template>
 
 <script>
-import { Form, FormItem, Select, Option, ColorPicker, Input } from "element-ui";
+import {
+  Form,
+  FormItem,
+  Select,
+  Option,
+  ColorPicker,
+  Input,
+} from "element-ui";
 export default {
   name: "el-Form",
   data() {
@@ -206,13 +236,6 @@ export default {
       ],
     };
   },
-  props: {
-    type: {
-      type: String,
-      default: null,
-    },
-  },
-
   components: {
     Form,
     FormItem,
@@ -227,11 +250,24 @@ export default {
     },
   },
   computed: {
-    form() {
+    listForm() {
       return this.$store.state.form;
+    },
+    type() {
+      return this.$store.state.type;
     },
   },
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.initForm {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center
+  flex-grow: 0
+}
+
+</style>

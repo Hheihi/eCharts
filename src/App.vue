@@ -29,4 +29,8 @@ a{
   text-decoration: none;
   color: black;
 }
+*{
+  margin: 0;
+  padding: 0;
+}
 </style>

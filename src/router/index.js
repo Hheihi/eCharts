@@ -36,11 +36,11 @@ const routes = [
       }
     ]
   },
-  // {
-  //   path: '/lineList',
-  //   name: 'lineList',
-  //   component: () => import('@/views/lineList/LineList.vue')
-  // },
+  {
+    path: '/viewList',
+    name: 'viewList',
+    component: () => import('@/views/ViewList.vue')
+  },
   {
     path: '*',
     name: 'error',
