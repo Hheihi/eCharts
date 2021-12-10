@@ -8,6 +8,12 @@
           group="item"
           animation="1000"
         >
+          <a>
+            <MenuItem index="/viewList" class="item">
+              <span class="el-icon"><i class="el-icon-menu"></i></span>
+              <span slot="title" class="el-menu-title">图表库</span>
+            </MenuItem>
+          </a>
           <a href="#lineList"
             ><MenuItem index="/lineList" class="item">
               <span class="el-icon"><i class="el-icon-menu"></i></span>
@@ -138,15 +144,20 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.item 
-    display flex
-    flex-direction row
-    align-items center
-  .el-icon
-    display inline-block
-    vertical-align middle
-  .el-menu-title
-    display inline-block
-    vertical-align middle
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.el-icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.el-menu-title {
+  display: inline-block;
+  vertical-align: middle;
+}
 </style>
 

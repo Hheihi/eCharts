@@ -5,7 +5,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 let store = new Vuex.Store({
-  namespaced: true,
+  // namespaced: true,
   state: {
     form: {
       name: "",
@@ -69,13 +69,15 @@ let store = new Vuex.Store({
           }
         },
       ],
-    }
+    },
+    type:null,
   },
   mutations: {
     changeForm(state, payload) {
-
       state.form = payload
-
+    },
+    changeType(state, payload) {
+      state.type = payload
     },
   },
   modules: {

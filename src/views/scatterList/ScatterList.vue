@@ -17,7 +17,7 @@
         </Col>
         <Col :span="6"><div class="grid-content bg-purple"></div></Col>
       </draggable>
-      <Dialog ref="dialog" :type="type" :title="optionsName" :id="id" />
+      <InitDialog ref="dialog"  :title="optionsName" :id="id" />
     </div>
   </div>
 </template>
@@ -25,13 +25,13 @@
 <script>
 import { Col } from "element-ui";
 import draggable from "vuedraggable";
-import Dialog from "@/components/Dialog.vue";
+import InitDialog from "@/components/InitDialog.vue";
 import { cloneDeep, merge } from "lodash";
 
 export default {
   name: "ScatterList",
   components: {
-    Dialog,
+    InitDialog,
     draggable,
     Col,
   },
@@ -219,12 +219,73 @@ export default {
       this.$refs["dialog"].visible = true;
       //在模态框中绘制图形
       this.$refs["dialog"].drawDialogChart(options);
+      this.$store.commit("changeType", this.type);
 
       //每次给表单赋值之前都清空表单
-      this.$store.commit(
-        "changeForm",
-        this.$store.state.form
-      );
+      const form = {
+        name: "",
+        //x轴
+        xAxis: {
+          // type: "",
+          //x轴线条 颜色 粗细
+          axisLine: {
+            lineStyle: {
+              color: "",
+              width: "1",
+            },
+          },
+          //x轴字体颜色字号
+          axisLabel: {
+            color: "",
+            fontSize: "",
+          },
+          //  x轴数据
+          // data: [],
+        },
+        //y轴
+        yAxis: {
+          // type: "",
+          //y轴字体颜色 粗细
+          axisLabel: {
+            color: "",
+            fontSize: "",
+          },
+        },
+        series: [
+          {
+            // data: [],
+            // type: "",
+            lineStyle: {
+              type: "",
+              color: "",
+              width: "1",
+            },
+            itemStyle: {
+              color: "",
+              borderRadius: undefined, //圆角大小
+              borderColor: "", //边框颜色
+              borderWidth: undefined, //边框粗细
+            },
+            orient: "LR",
+            label: {
+              position: "right",
+            },
+            //线条形状
+            edgeShape: "polyline",
+            //节点聚焦
+            emphasis: {
+              focus: "ancestor",
+              blurScope: "global",
+              itemStyle: {
+                shadowBlur: 10, //阴影长度
+                shadowOffsetX: 0, //阴影偏移量
+                shadowColor: "", //阴影颜色
+              },
+            },
+          },
+        ],
+      };
+      this.$store.commit("changeForm", form);
       this.$store.commit(
         "changeForm",
         cloneDeep(merge(this.$store.state.form, options))
@@ -235,21 +296,28 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.grid-content 
-  width 400px;
-  height 400px;
-  margin-bottom 20px;
-  margin-left 5px;
-  border-radius 4px;
-.bg-purple
-    background #DEDEDE
-.title 
-  width 100%;
-  flex-wrap nowrap;
-  display block;
-.lineList 
-  display flex;
-  flex-wrap wrap;
-  flex-direction row;
-  justify-content center;
+.grid-content {
+  width: 400px;
+  height: 400px;
+  margin-bottom: 20px;
+  margin-left: 5px;
+  border-radius: 4px;
+}
+
+.bg-purple {
+  background: #DEDEDE;
+}
+
+.title {
+  width: 100%;
+  flex-wrap: nowrap;
+  display: block;
+}
+
+.scatterList {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
 </style>

@@ -19,7 +19,7 @@
         <Col :span="6"><div class="grid-content bg-purple"></div></Col>
         <Col :span="6"><div class="grid-content bg-purple"></div></Col>
       </draggable>
-      <Dialog ref="dialog" :title="optionsName" :type="type" :id="id"> </Dialog>
+      <InitDialog ref="dialog" :title="optionsName"  :id="id"> </InitDialog>
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@ import draggable from "vuedraggable";
 import { Col } from "element-ui";
 import { cloneDeep, merge } from 'lodash';
 
-import Dialog from "@/components/Dialog.vue";
+import InitDialog from "@/components/InitDialog.vue";
 export default {
   name: "TreeList",
   data() {
@@ -104,7 +104,7 @@ export default {
       id: "treeList-charts",
     };
   },
-  components: { Dialog, draggable, Col },
+  components: { InitDialog, draggable, Col },
   computed: {},
   mounted() {
     this.draw();
@@ -117,20 +117,57 @@ export default {
       chart17.setOption(this.list[0].options);
     },
     dialogTableVisible(options) {
+      //点击 赋值之前 恢复默认表单
+      const form = {
+        name: "",
+        //x轴
+        series: [
+          {
+            // data: [],
+            // type: "",
+            lineStyle: {
+              type: "",
+              color: "",
+              width: "1",
+            },
+            itemStyle: {
+              color: "",
+              borderRadius: undefined, //圆角大小
+              borderColor: "", //边框颜色
+              borderWidth: undefined, //边框粗细
+            },
+            orient: "LR",
+            label: {
+              position: "right",
+            },
+            //线条形状
+            edgeShape: "polyline",
+            //节点聚焦
+            emphasis: {
+              focus: "ancestor",
+              blurScope: "global",
+              itemStyle: {
+                shadowBlur: 10, //阴影长度
+                shadowOffsetX: 0, //阴影偏移量
+                shadowColor: "", //阴影颜色
+              },
+            },
+          },
+        ],
+      };
+      this.$store.commit("changeForm", form);
+      this.$store.commit("changeType", this.type);
+
       this.optionsName = options.name;
       //模态框组件的隐藏显示属性
       this.$refs["dialog"].visible = true;
       //在模态框中绘制图形
       this.$refs["dialog"].drawDialogChart(options);
-      //点击 赋值之前 恢复默认表单
-      this.$store.commit(
-        "changeForm",
-        this.$store.state.form
-      );
+
       //给vuex表单赋值 采用深拷贝
       this.$store.commit(
         "changeForm",
-        cloneDeep(merge(this.$store.state.form, options))
+        cloneDeep(merge(form, options))
       );
     },
   },
@@ -150,7 +187,7 @@ export default {
   width 100%;
   flex-wrap nowrap;
   display block;
-.lineList 
+.treeList 
   display flex;
   flex-wrap wrap;
   flex-direction row;
